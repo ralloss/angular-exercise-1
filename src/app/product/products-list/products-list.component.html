@@ -1,1 +1,45 @@
-<p>products-list works!</p>
+<div *ngIf="loading" class="mt-2 row alert alert-info">
+  Loading Products ...
+  <div class="spinner-border text-primary" role="status">
+    <span class="sr-only"></span>
+  </div>
+</div>
+
+<div *ngIf="productList.length" class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <th scope="col">
+        <button (click)="toggleSort('product')" class="btn btn-sm">
+          Product
+        </button>
+      </th>
+      <th scope="col">
+        <button (click)="toggleSort('cost')" class="btn btn-sm">Cost</button>
+      </th>
+      <th scope="col">Description</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Actions</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of productList">
+        <td>
+          {{ product.product }}
+        </td>
+        <td>
+          {{ product.cost }}
+        </td>
+        <td>
+          {{ product.description }}
+        </td>
+        <td>
+          {{ product.quantity }}
+        </td>
+
+        <td>
+          <a routerLink="#">Edit</a><br />
+          <a routerLink="#">Delete</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

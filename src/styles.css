@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+.table > thead {
+  vertical-align: middle;
+}
+
+.table button {
+  font-weight: bold;
+  font-size: medium;
+  text-decoration: underline;
+}

@@ -21,11 +21,11 @@ export class ProductService {
   }
 
   insertProduct(product: Product) {
-    this.http.post<ProductAPI>(`${PRODUCT_API}/create`, product);
+    return this.http.post<ProductAPI>(`${PRODUCT_API}/create`, product);
   }
 
   updateProduct(product: Product) {
-    this.http.patch<ProductAPI>(`${PRODUCT_API}/create`, product);
+    return this.http.patch<ProductAPI>(`${PRODUCT_API}/update`, product);
   }
 
   deleteProduct(id: string) {
