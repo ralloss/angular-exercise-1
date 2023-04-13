@@ -7,3 +7,15 @@
   font-size: medium;
   text-decoration: underline;
 }
+
+.table-action {
+  font-size: large;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+.table-action:hover {
+  text-decoration: underline;
+}

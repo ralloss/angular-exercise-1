@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../user.interfaces';
 import { UserService } from '../user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-insert',
   templateUrl: './user-insert.component.html',
   styleUrls: ['./user-insert.component.css'],
 })
-export class UserInsertComponent {
+export class UserInsertComponent implements OnDestroy {
   form: FormGroup;
+  private subscription: Subscription | undefined;
 
   constructor(private fb: FormBuilder, private service: UserService) {
     this.form = this.fb.group({
@@ -51,11 +53,17 @@ export class UserInsertComponent {
     if (this.form.valid) {
       console.log(this.form.value);
       const user = this.form.value as User;
-      this.service.insertUser(user).subscribe((response) => {
-        console.log(response);
-      });
+      this.subscription = this.service
+        .insertUser(user)
+        .subscribe((response) => {
+          console.log(response);
+        });
     } else {
       console.log('Form is not valid');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

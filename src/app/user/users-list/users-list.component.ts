@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '../user.service';
-import { User, UserAPIList } from '../user.interfaces';
+import { User, UserAPI, UserAPIList } from '../user.interfaces';
 import { Subscription } from 'rxjs';
 import { orderBy } from 'lodash-es';
 
@@ -14,7 +14,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
 
   loading = false;
   userList: User[] = [];
-  subscription: Subscription | undefined;
+  private fetchSubscription: Subscription | undefined;
+  private deleteSubscription: Subscription | undefined;
 
   usernameSortType: 'asc' | 'desc' = 'asc';
   firstNameSortType: 'asc' | 'desc' = 'asc';
@@ -23,7 +24,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('Starting "findall" API call');
     this.loading = true;
-    this.subscription = this.userService.findAll().subscribe({
+    this.fetchSubscription = this.userService.findAll().subscribe({
       next: (apiData: UserAPIList) => {
         const { status, data } = apiData;
         this.userList = data;
@@ -40,8 +41,31 @@ export class UsersListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+  handleDelete(user: User) {
+    if (
+      confirm(`Are you sure that you want to delete user "${user.username}"?`)
+    )
+      this.delete(user.username);
+  }
+
+  private delete(username: string) {
+    this.deleteSubscription = this.userService.deleteUser(username).subscribe({
+      next: (apiData: UserAPI) => {
+        const { status, data } = apiData;
+        console.log(status, data);
+        if (status) {
+          this.userList = this.userList.filter((u) => u.username !== username);
+        } else {
+          console.log('Could not delete user');
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        console.log('API delete call completed');
+      },
+    });
   }
 
   toggleSort(key: string) {
@@ -64,5 +88,10 @@ export class UsersListComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.fetchSubscription?.unsubscribe();
+    this.deleteSubscription?.unsubscribe();
   }
 }

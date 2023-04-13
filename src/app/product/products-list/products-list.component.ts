@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProductService } from '../product.service';
-import { Product, ProductAPIList } from '../product.interfaces';
+import { Product, ProductAPI, ProductAPIList } from '../product.interfaces';
 import { Subscription } from 'rxjs';
 import { orderBy } from 'lodash-es';
 
@@ -14,7 +14,8 @@ export class ProductsListComponent implements OnInit, OnDestroy {
 
   loading = false;
   productList: Product[] = [];
-  subscription: Subscription | undefined;
+  private fetchSubscription: Subscription | undefined;
+  private deleteSubscription: Subscription | undefined;
 
   productSortType: 'asc' | 'desc' = 'asc';
   costSortType: 'asc' | 'desc' = 'asc';
@@ -22,7 +23,7 @@ export class ProductsListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log('Starting "findall" API call');
     this.loading = true;
-    this.subscription = this.productService.findAll().subscribe({
+    this.fetchSubscription = this.productService.findAll().subscribe({
       next: (apiData: ProductAPIList) => {
         const { status, data } = apiData;
         this.productList = data;
@@ -52,7 +53,37 @@ export class ProductsListComponent implements OnInit, OnDestroy {
     this.productList = orderBy(this.productList, [key], [sortKey]);
   }
 
+  handleDelete(product: Product) {
+    if (
+      confirm(
+        `Are you sure that you want to delete product "${product.product}"?`
+      )
+    )
+      this.delete(product._id);
+  }
+
+  private delete(id: string) {
+    this.deleteSubscription = this.productService.deleteProduct(id).subscribe({
+      next: (apiData: ProductAPI) => {
+        const { status, data } = apiData;
+        console.log(status, data);
+        if (status) {
+          this.productList = this.productList.filter((p) => p._id !== id);
+        } else {
+          console.log('Could not delete product');
+        }
+      },
+      error: (error) => {
+        console.log(error);
+      },
+      complete: () => {
+        console.log('API call completed');
+      },
+    });
+  }
+
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();
+    this.fetchSubscription?.unsubscribe();
+    this.deleteSubscription?.unsubscribe();
   }
 }

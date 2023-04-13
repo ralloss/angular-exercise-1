@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User, UserAPIList } from './user.interfaces';
+import { User, UserAPI, UserAPIList } from './user.interfaces';
 import { delay } from 'rxjs';
 import { BASE_URL } from '../app.config';
 
@@ -15,18 +15,18 @@ export class UserService {
   }
 
   findByUsername(username: string) {
-    return this.http.get<User>(`${USER_API}/findOne/${username}`);
+    return this.http.get<UserAPI>(`${USER_API}/findOne/${username}`);
   }
 
   insertUser(user: User) {
-    return this.http.post<User>(`${USER_API}/create`, user);
+    return this.http.post<UserAPI>(`${USER_API}/create`, user);
   }
 
   updateUser(user: User) {
-    return this.http.patch<User>(`${USER_API}/update`, user);
+    return this.http.patch<UserAPI>(`${USER_API}/update`, user);
   }
 
   deleteUser(username: string) {
-    return this.http.delete<User>(`${USER_API}/delete/${username}`);
+    return this.http.delete<UserAPI>(`${USER_API}/delete/${username}`);
   }
 }
