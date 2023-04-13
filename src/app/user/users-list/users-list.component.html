@@ -5,7 +5,7 @@
   </div>
 </div>
 
-<div *ngIf="userList.length">
+<div *ngIf="userList.length" class="table-responsive">
   <table class="table table-striped">
     <thead>
       <th scope="col">
@@ -22,6 +22,7 @@
       <th scope="col">Email</th>
       <th scope="col">Address</th>
       <th scope="col">Phone</th>
+      <th scope="col">Actions</th>
     </thead>
     <tbody>
       <tr *ngFor="let user of userList">
@@ -37,16 +38,18 @@
         <td>
           {{ user.email }}
         </td>
-        <td>
-          {{ user.address.area }} <br />
-          {{ user.address.road }}
-        </td>
+        <td>{{ user.address.road }}, {{ user.address.area }}</td>
         <td>
           <div *ngFor="let phone of user.phone">
             <strong>{{ phone.type }}</strong>
-            <br />
+            :
             {{ phone.number }}
           </div>
+        </td>
+
+        <td>
+          <a routerLink="#">Edit</a><br />
+          <a routerLink="#">Delete</a>
         </td>
       </tr>
     </tbody>
