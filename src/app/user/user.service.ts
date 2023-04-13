@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User, UserAPIList } from './user.interfaces';
 import { delay } from 'rxjs';
+import { BASE_URL } from '../app.config';
 
-const BASE_URL = 'https://codingfactory.ddns.net';
 const USER_API = BASE_URL + '/api/user';
 
 @Injectable()
