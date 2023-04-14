@@ -3,6 +3,7 @@ import { UserService } from '../user.service';
 import { User, UserAPI, UserAPIList } from '../user.interfaces';
 import { Subscription } from 'rxjs';
 import { orderBy } from 'lodash-es';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users-list',
@@ -10,7 +11,7 @@ import { orderBy } from 'lodash-es';
   styleUrls: ['./users-list.component.css'],
 })
 export class UsersListComponent implements OnInit, OnDestroy {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   loading = false;
   userList: User[] = [];
@@ -46,6 +47,10 @@ export class UsersListComponent implements OnInit, OnDestroy {
       confirm(`Are you sure that you want to delete user "${user.username}"?`)
     )
       this.delete(user.username);
+  }
+
+  handleUpdate(user: User) {
+    this.router.navigate(['/user/update/' + user.username]);
   }
 
   private delete(username: string) {

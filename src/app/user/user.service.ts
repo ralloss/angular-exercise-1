@@ -11,11 +11,11 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   findAll() {
-    return this.http.get<UserAPIList>(`${USER_API}/findAll`).pipe(delay(500));
+    return this.http.get<UserAPIList>(`${USER_API}/findall`).pipe(delay(500));
   }
 
   findByUsername(username: string) {
-    return this.http.get<UserAPI>(`${USER_API}/findOne/${username}`);
+    return this.http.get<UserAPI>(`${USER_API}/findone/${username}`);
   }
 
   insertUser(user: User) {

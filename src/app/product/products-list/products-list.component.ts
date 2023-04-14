@@ -3,6 +3,7 @@ import { ProductService } from '../product.service';
 import { Product, ProductAPI, ProductAPIList } from '../product.interfaces';
 import { Subscription } from 'rxjs';
 import { orderBy } from 'lodash-es';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-products-list',
@@ -10,7 +11,7 @@ import { orderBy } from 'lodash-es';
   styleUrls: ['./products-list.component.css'],
 })
 export class ProductsListComponent implements OnInit, OnDestroy {
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private router: Router) {}
 
   loading = false;
   productList: Product[] = [];
@@ -60,6 +61,10 @@ export class ProductsListComponent implements OnInit, OnDestroy {
       )
     )
       this.delete(product._id);
+  }
+
+  handleUpdate(product: Product) {
+    this.router.navigate(['/product/update/' + product._id]);
   }
 
   private delete(id: string) {

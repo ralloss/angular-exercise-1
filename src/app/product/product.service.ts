@@ -12,12 +12,12 @@ export class ProductService {
 
   findAll() {
     return this.http
-      .get<ProductAPIList>(`${PRODUCT_API}/findAll`)
+      .get<ProductAPIList>(`${PRODUCT_API}/findall`)
       .pipe(delay(500));
   }
 
   findById(id: string) {
-    return this.http.get<ProductAPI>(`${PRODUCT_API}/findOne/${id}`);
+    return this.http.get<ProductAPI>(`${PRODUCT_API}/findone/${id}`);
   }
 
   insertProduct(product: Product) {

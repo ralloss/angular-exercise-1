@@ -1,0 +1,5 @@
+<user-form *ngIf="user" [user]="user" (submitUser)="update($event)"></user-form>
+<div *ngIf="error">
+  <p class="text-danger">{{ error }}</p>
+  <p>Go back to <a routerLink="/user/list">users list</a></p>
+</div>

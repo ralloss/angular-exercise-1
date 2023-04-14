@@ -1,0 +1,9 @@
+<product-form
+  *ngIf="product"
+  [product]="product"
+  (submitProduct)="update($event)"
+></product-form>
+<div *ngIf="error">
+  <p class="text-danger">{{ error }}</p>
+  <p>Go back to <a routerLink="/product/list">products list</a></p>
+</div>
